@@ -1,0 +1,20 @@
+version: '3.7'
+
+services:
+ rt:
+  build: .
+  image: $REG/rt/$SRV:$RT
+  volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+    - ./config:/data
+  labels:
+      traefik.enable: "true"
+      traefik.http.middlewares.port-0-stripprefix.stripprefix.prefixes: /port/
+      traefik.http.routers.port-0.middlewares: port-0-stripprefix
+      traefik.http.routers.port-0.rule: PathPrefix(`/port/`)
+  restart: always
+
+networks:
+  default:
+    external:
+        name: rt_default
