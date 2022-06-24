@@ -4,11 +4,13 @@ services:
  rt:
   build: .
   image: $REG/rt/$SRV:$RT
+  ports:
+    - 9000:9000
   volumes:
     - /var/run/docker.sock:/var/run/docker.sock
     - ./config:/data
   labels:
-      traefik.enable: "true"
+      traefik.enable: "false"
       traefik.http.middlewares.port-0-stripprefix.stripprefix.prefixes: /port/
       traefik.http.routers.port-0.middlewares: port-0-stripprefix
       traefik.http.routers.port-0.rule: PathPrefix(`/port/`)
